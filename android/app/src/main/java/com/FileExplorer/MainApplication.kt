@@ -1,4 +1,4 @@
-package com.kimi_ticket_nlu
+package com.FileExplorer
 
 import android.app.Application
 import com.facebook.react.PackageList

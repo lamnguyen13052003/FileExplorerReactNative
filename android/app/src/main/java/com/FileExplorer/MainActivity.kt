@@ -1,4 +1,4 @@
-package com.kimi_ticket_nlu
+package com.FileExplorer
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
@@ -11,7 +11,7 @@ class MainActivity : ReactActivity() {
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
    */
-  override fun getMainComponentName(): String = "kimi_ticket_nlu"
+  override fun getMainComponentName(): String = "FileExplorer"
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
