@@ -6,54 +6,44 @@
  */
 
 import React from "react";
-import { SafeAreaView, StyleSheet, useColorScheme } from "react-native";
-
-import { Colors } from "react-native/Libraries/NewAppScreen";
+import { SafeAreaView } from "react-native";
 import Header from "./component/Header.tsx";
 import Home from "./pages/Home.tsx";
 import Column from "./utils/Column.tsx";
+import bootstrapColors from "./utils/Colors.tsx";
+import { RootState, store } from "./hooks/redux/store.config.ts";
+import { Provider, useSelector } from "react-redux";
 
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === "dark";
+function MainApp() {
+  const theme = useSelector((state: RootState) => state.themeRedux.theme);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter
-  };
+  bootstrapColors.setTheme(theme);
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-    {/*  <StatusBar
-        barStyle={isDarkMode ? "light-content" : "dark-content"}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />*/}
+    <SafeAreaView
+      style={{
+        backgroundColor: bootstrapColors.light.getColor(),
+      }}
+    >
       <Column>
         <Header />
-        <Home style={{
-          padding: 20,
-        }}/>
+        <Home
+          style={{
+            padding: 20,
+          }}
+        />
       </Column>
     </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: "600"
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: "400"
-  },
-  highlight: {
-    fontWeight: "700"
-  }
-});
+function App() {
+  return (
+    <Provider store={store}>
+      <MainApp />
+    </Provider>
+  );
+}
 
 export default App;

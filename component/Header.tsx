@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from "react-native";
 import { Icon } from "react-native-elements";
-import { primary, secondary } from "../utils/Colors.tsx";
+import bootstrapColors from "../utils/Colors.tsx";
+import { RootState } from "../hooks/redux/store.config.ts";
+import { useDispatch, useSelector } from "react-redux";
+import { changeTheme } from "../hooks/redux/slice/theme.slice.ts";
 
 export function Header() {
+  const theme = useSelector((state: RootState) => state.themeRedux.theme);
+  const [items, setItems] = useState<"light-mode" | "dark-mode">("light-mode");
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setItems(theme === "light" ? "light-mode" : "dark-mode");
+  }, [theme]);
+
   return (
     <View
       style={{
         flexDirection: "row",
         justifyContent: "space-between",
-        backgroundColor: primary,
+        backgroundColor: bootstrapColors.primary.getColor(),
         alignItems: "center",
         padding: 15
       }}
@@ -19,14 +30,14 @@ export function Header() {
       }}>
         <Text style={{
           fontSize: 25,
-          color: "white",
+          color: bootstrapColors.light.getColor(),
           fontWeight: "bold"
         }}>
           Fiotters
         </Text>
         <Text style={{
           fontSize: 15,
-          color: "white"
+          color: bootstrapColors.light.getColor()
         }}>
           Team folder
         </Text>
@@ -37,25 +48,43 @@ export function Header() {
       }}>
         <IconButton
           styles={{
-            backgroundColor: secondary
+            backgroundColor: bootstrapColors.dark.setOpacity(0.3).getColor()
+          }}
+          icon={
+            <Icon
+              name={items}
+              color={bootstrapColors.light.getColor()}
+            />
+          }
+
+          onPress={() => {
+            dispatch(changeTheme());
+          }}
+        />
+
+        <IconButton
+          styles={{
+            backgroundColor: bootstrapColors.dark.setOpacity(0.3).getColor()
           }}
           icon={
             <Icon
               name="search"
-              color={"white"}
+              color={bootstrapColors.light.getColor()}
             />
           }
         />
         <IconButton
           styles={{
-            backgroundColor: secondary,
+            backgroundColor: bootstrapColors.dark.setOpacity(0.3).getColor()
           }}
           icon={
             <Icon
               name="notifications"
-              color={"white"}
+              color={bootstrapColors.light.getColor()}
             />
           }
+          onPress={() => {
+          }}
         />
       </View>
     </View>
@@ -77,7 +106,7 @@ const IconButton = ({ icon, onPress, styles }: {
     >
       <View
         style={[{
-          backgroundColor: "#7c7b7b",
+          backgroundColor: bootstrapColors.dark.setOpacity(0.1).getColor(),
           padding: 10,
           borderRadius: 10,
           height: width,
@@ -99,7 +128,7 @@ export const styles = StyleSheet.create({
   circle: {
     borderRadius: 50,
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: bootstrapColors.light.getColor(),
     justifyContent: "center",
     alignItems: "center"
   },

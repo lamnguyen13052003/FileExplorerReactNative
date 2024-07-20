@@ -1,23 +1,3 @@
-const primary = "rgb(13, 110, 253)";
-const secondary = "rgb(108, 117, 125)";
-const success = "rgb(25, 135, 84)";
-const danger = "rgb(220, 53, 69)";
-const warning = "rgb(255, 193, 7)";
-const info = "rgb(13, 202, 240)";
-const light = "rgb(248, 249, 250)";
-const dark = "rgb(33, 37, 41)";
-
-class BootstrapColors {
-  primary = new Color(13, 110, 253);
-  secondary = new Color(108, 117, 125);
-  success = new Color(25, 135, 84);
-  danger = new Color(220, 53, 69);
-  warning = new Color(255, 193, 7);
-  info = new Color(13, 202, 240);
-  light = new Color(248, 249, 250);
-  dark = new Color(33, 37, 41);
-}
-
 export class Color {
   red: number;
   green: number;
@@ -40,16 +20,65 @@ export class Color {
   }
 }
 
+const primaryColor = new Color(13, 110, 253);
+const secondaryColor = new Color(108, 117, 125);
+const successColor = new Color(25, 135, 84);
+const dangerColor = new Color(220, 53, 69);
+const warningColor = new Color(255, 193, 7);
+const infoColor = new Color(13, 202, 240);
+const lightColor = new Color(248, 249, 250);
+const darkColor = new Color(33, 37, 41);
+
+export type Theme = "light" | "dark";
+
+class BootstrapColors {
+  private theme: Theme = "light";
+
+  primary: Color;
+  secondary: Color;
+  success: Color;
+  danger: Color;
+  warning: Color;
+  info: Color;
+  light: Color;
+  dark: Color;
+
+constructor() {
+  // this.setTheme("light");
+  this.primary = primaryColor;
+  this.secondary = secondaryColor;
+  this.success = successColor;
+  this.danger = dangerColor;
+  this.warning = warningColor;
+  this.info = infoColor;
+  this.light = lightColor;
+  this.dark = darkColor;
+}
+
+  setTheme(theme: Theme) {
+    this.theme = theme;
+    if (theme === "light") {
+      this.primary = primaryColor;
+      this.secondary = secondaryColor;
+      this.success = successColor;
+      this.danger = dangerColor;
+      this.warning = warningColor;
+      this.info = infoColor;
+      this.light = lightColor;
+      this.dark = darkColor;
+    } else {
+      this.primary = primaryColor;
+      this.secondary = secondaryColor;
+      this.success = successColor;
+      this.danger = dangerColor;
+      this.warning = warningColor;
+      this.info = infoColor;
+      this.light = darkColor;
+      this.dark = lightColor;
+
+    }
+  }
+}
+
 const bootstrapColors = new BootstrapColors();
 export default bootstrapColors;
-
-export {
-  primary,
-  secondary,
-  success,
-  danger,
-  warning,
-  info,
-  light,
-  dark
-};
