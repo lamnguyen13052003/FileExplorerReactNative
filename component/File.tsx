@@ -6,6 +6,7 @@ import React from "react";
 import { useMainScreenNavigation } from "../utils/useMainScreenNavigation.ts";
 import { useRoute } from "@react-navigation/native";
 import { FolderScreenRouteProp } from "../types/route.type.ts";
+import FileViewer from "react-native-file-viewer";
 
 export type FileType = {
   name: string;
@@ -21,8 +22,16 @@ export function File({ data, fontSize }: { data: FileType, fontSize?: number }) 
   const navigation = useMainScreenNavigation();
   const defaultFontSize = 18;
 
+  const open = (path: string) => {
+    FileViewer.open(path);
+  };
+
   return (
     <TouchableOpacity onPress={() => {
+      if(data.isFile()) {
+        open(data.path);
+        return;
+      }
       navigation.navigate("FolderScreen", !stackFolder ? [data] : [...stackFolder, data]);
     }}>
       <Row style={{
