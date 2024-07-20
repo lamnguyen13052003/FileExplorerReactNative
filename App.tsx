@@ -8,11 +8,18 @@
 import React from "react";
 import { SafeAreaView } from "react-native";
 import Header from "./component/Header.tsx";
-import Home from "./pages/Home.tsx";
+import HomeScreen from "./pages/HomeScreen.tsx";
 import Column from "./utils/Column.tsx";
 import bootstrapColors from "./utils/Colors.tsx";
 import { RootState, store } from "./hooks/redux/store.config.ts";
 import { Provider, useSelector } from "react-redux";
+import { NavigationContainer } from "@react-navigation/native";
+import FolderScreen from "./pages/FolderScreen.tsx";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { MainScreenStackParamList, RootStackParamList } from "./types/stack.type.ts";
+
+const RootStack = createNativeStackNavigator<RootStackParamList>();
+const InnerStack = createNativeStackNavigator<MainScreenStackParamList>();
 
 
 function MainApp() {
@@ -24,15 +31,17 @@ function MainApp() {
     <SafeAreaView
       style={{
         backgroundColor: bootstrapColors.light.getColor(),
+        height: "100%"
       }}
     >
-      <Column>
+      <Column style={{
+        height: "100%"
+      }}>
         <Header />
-        <Home
-          style={{
-            padding: 20,
-          }}
-        />
+        <RootStack.Navigator screenOptions={{ headerShown: false }}>
+          <InnerStack.Screen name="HomeScreen" component={HomeScreen} />
+          <InnerStack.Screen name="FolderScreen" component={FolderScreen} />
+        </RootStack.Navigator>
       </Column>
     </SafeAreaView>
   );
@@ -41,7 +50,13 @@ function MainApp() {
 function App() {
   return (
     <Provider store={store}>
-      <MainApp />
+      <NavigationContainer>
+        <RootStack.Navigator screenOptions={{
+          headerShown: false
+        }}>
+          <RootStack.Screen name="MainScreen" component={MainApp} />
+        </RootStack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 }

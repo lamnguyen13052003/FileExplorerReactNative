@@ -5,6 +5,7 @@ import bootstrapColors from "../utils/Colors.tsx";
 import { RootState } from "../hooks/redux/store.config.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { changeTheme } from "../hooks/redux/slice/theme.slice.ts";
+import { IconButton } from "./IconButton.tsx";
 
 export function Header() {
   const theme = useSelector((state: RootState) => state.themeRedux.theme);
@@ -33,7 +34,7 @@ export function Header() {
           color: bootstrapColors.light.getColor(),
           fontWeight: "bold"
         }}>
-          Fiotters
+          Kimi Explorer
         </Text>
         <Text style={{
           fontSize: 15,
@@ -91,55 +92,7 @@ export function Header() {
   );
 }
 
-const IconButton = ({ icon, onPress, styles }: {
-  icon: React.ReactNode,
-  styles?: StyleProp<ViewStyle>,
-  onPress?: () => void
-}) => {
-  const [width, setWidth] = React.useState(0);
 
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        onPress && onPress();
-      }}
-    >
-      <View
-        style={[{
-          backgroundColor: bootstrapColors.dark.setOpacity(0.1).getColor(),
-          padding: 10,
-          borderRadius: 10,
-          height: width,
-          justifyContent: "center",
-          alignItems: "center"
-        }, styles && styles]}
-        onLayout={(event) => {
-          const { width } = event.nativeEvent.layout;
-          setWidth(width);
-        }}
-      >
-        {icon}
-      </View>
-    </TouchableOpacity>
-  );
-};
 
-export const styles = StyleSheet.create({
-  circle: {
-    borderRadius: 50,
-    flex: 1,
-    backgroundColor: bootstrapColors.light.getColor(),
-    justifyContent: "center",
-    alignItems: "center"
-  },
-  textCircle: {
-    color: "black",
-    fontSize: 30
-  },
-  menuItemActive: {
-    backgroundColor: "red",
-    bottom: 50
-  }
-});
 
 export default Header;

@@ -1,5 +1,6 @@
 import { PermissionsAndroid, Platform } from "react-native";
 import RNFS from "react-native-fs";
+import { FileType } from "../component/File.tsx";
 
 const requestCameraPermission = async () => {
   try {
@@ -14,7 +15,6 @@ const requestCameraPermission = async () => {
       granted["android.permission.WRITE_EXTERNAL_STORAGE"] === PermissionsAndroid.RESULTS.GRANTED &&
       granted["android.permission.READ_EXTERNAL_STORAGE"] === PermissionsAndroid.RESULTS.GRANTED
     ) {
-      console.log("You can use the storage");
     } else {
       throw new Error("Storage permission denied");
     }
@@ -49,23 +49,33 @@ const getFolderSizeHelper = async (path: string) => {
   return totalSize;
 };
 
-const getRootDirectories = async () => {
+const getFiles = async (path?: string) => {
   return requestCameraPermission().then(async () => {
-    let rootPath = "";
-    if (Platform.OS === "android") {
-      rootPath = RNFS.ExternalStorageDirectoryPath;
-    } else if (Platform.OS === "ios") {
-      rootPath = RNFS.DocumentDirectoryPath; // Hoặc một đường dẫn khác bạn muốn truy cập trên iOS
+    if (!path) {
+      if (Platform.OS === "android") {
+        path = RNFS.ExternalStorageDirectoryPath;
+      } else if (Platform.OS === "ios") {
+        path = RNFS.DocumentDirectoryPath;
+      } else {
+        path = "";
+      }
     }
 
     try {
-      const files = await RNFS.readDir(rootPath);
-      const directories = files.filter(file => file.isDirectory());
-      return directories.map(dir => dir.name);
+      const files = await RNFS.readDir(path);
+      return files.map(dir => {
+        return {
+          name: dir.name,
+          path: dir.path,
+          size: dir.size,
+          isFile: dir.isFile,
+          isDirectory: dir.isDirectory
+        } as FileType;
+      });
     } catch (err) {
       throw err;
     }
   });
 };
 
-export { getRootDirectories, getFolderSize };
+export { getFiles, getFolderSize };
